@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grama Seva</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #04620c;
+      color: #1b3a2a;
+    }
+
+    .app {
+      max-width: 420px;
+      margin: auto;
+      min-height: 100vh;
+      background: #f6fff8;
+      border: 1px solid #c8e6c9;
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      padding: 24px;
+      min-height: 100vh;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* ===== WELCOME ===== */
+    .brand {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 44px;
+      animation: brandMove 2s ease forwards;
+    }
+
+    @keyframes brandMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(-40px); }
+    }
+
+    .start-btn {
+      margin-top: 30px;
+      width: 220px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 2s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* ===== COMMON ===== */
+    input, button {
+      width: 100%;
+      max-width: 280px;
+      padding: 12px;
+      margin-top: 14px;
+      border-radius: 14px;
+      border: 1px solid #999;
+      font-size: 15px;
+    }
+
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: #a5d6a7;
+      color: #1b3a2a;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 320px;
+      margin-top: 16px;
+      padding: 20px;
+      border-radius: 16px;
+      border: 2px solid #2e7d32;
+      background: #f1f8e9;
+      text-align: left;
+    }
+
+    .photo-box {
+      height: 160px;
+      width: 100%;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .small { font-size: 13px; margin-top: 10px; }
+
+    /* ===== HOME TOP BAR ===== */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* center title */
+      padding: 8px 16px;
+      background: #f6fff8;
+      margin-bottom: 24px;
+      font-size: 22px;
+      color: #2e7d32;
+      font-weight: bold;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .small-btn {
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 10px;
+      width: auto;
+    }
+
+    /* ===== SERVICE HEADER (BACK ARROW) ===== */
+    .service-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .back-arrow {
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    /* ===== HOME GRID ===== */
+    .service-grid {
+      margin-top: 50px;
+      width: 100%;
+      max-width: 340px;
+      display: grid;
+      grid-template-columns: 2fr 2fr;
+      gap: 20px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .grid-card {
+      height: 150px;
+      border-radius: 18px;
+      border: 2px solid #2e7d32;
+      background: #f1f8e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #home {
+      align-items: stretch;  
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- WELCOME -->
+  <div class="screen active" id="welcome">
+    <div class="brand">Grama Seva</div>
+    <button class="start-btn" onclick="go('login')">Get Started</button>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="screen" id="login">
+    <h3>Phone Verification</h3>
+    <input type="text" id="phone" placeholder="Enter phone number" />
+    <button onclick="sendOTP()">Send OTP</button>
+    <p class="small" id="otpInfo"></p>
+  </div>
+
+  <!-- OTP -->
+  <div class="screen" id="otp">
+    <h3>Enter OTP</h3>
+    <input type="text" id="otpInput" placeholder="OTP" />
+    <button onclick="verifyOTP()">Verify</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="screen" id="home" style="justify-content:flex-start;">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      Home
+    </div>
+
+    <!-- GRID SERVICES -->
+    <div class="service-grid">
+      <div class="grid-card" onclick="openService('medical')">Medical Services</div>
+      <div class="grid-card" onclick="openService('agri')">Agriculture Services</div>
+      <div class="grid-card" onclick="openService('transport')">Transport</div>
+      <div class="grid-card" onclick="openService('machine')">Machinery</div>
+    </div>
+  </div>
+
+  <!-- SERVICE DETAIL -->
+  <div class="screen" id="serviceDetail">
+    <div class="service-header">
+      <div class="back-arrow" onclick="go('home')">←</div>
+      <h3 id="serviceTitle"></h3>
+    </div>
+    <div id="serviceImage" class="photo-box"></div>
+    <div id="serviceContent"></div>
+    <button onclick="callService()">Call</button>
+    <button class="secondary" onclick="messageService()">Send Message</button>
+  </div>
+
+  <!-- CREATE ACCOUNT -->
+  <div class="screen" id="createAccount">
+    <h3>Create Account</h3>
+    <input placeholder="Name" />
+    <input placeholder="Age" />
+    <input placeholder="Place" />
+    <input placeholder="Ward" />
+    <input placeholder="Occupation" />
+    <input placeholder="Family Members" />
+    <button onclick="go('home')">Save</button>
+  </div>
+
+</div>
+
+<script>
+  const PREDEFINED_NUMBER = "9876543210";
+  const FIXED_OTP = "1234";
+  let currentServiceNumber = PREDEFINED_NUMBER;
+
+  function go(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function sendOTP() {
+    const phone = document.getElementById('phone').value;
+    const info = document.getElementById('otpInfo');
+    if (phone !== PREDEFINED_NUMBER) {
+      info.style.color = 'red';
+      info.innerText = 'Invalid number';
+      return;
+    }
+    info.style.color = 'green';
+    info.innerText = 'OTP sent';
+    go('otp');
+  }
+
+  function verifyOTP() {
+    if (document.getElementById('otpInput').value === FIXED_OTP) go('home');
+    else alert('Invalid OTP');
+  }
+
+  function openService(type) {
+    const title = document.getElementById('serviceTitle');
+    const img = document.getElementById('serviceImage');
+    const content = document.getElementById('serviceContent');
+
+    if (type === 'medical') {
+      title.innerText = "Medical Services";
+      img.style.backgroundImage = "url('https://i.pinimg.com/736x/e7/0e/cb/e70ecbc92c9849319ebcde8e6b1a632c.jpg')";
+      content.innerHTML = `
+        <div class="card">🩺 Skin Doctor: 10 AM – 1 PM</div>
+        <div class="card">🫁 Pulmonologist: 2 PM – 4 PM</div>
+        <div class="card">👂 ENT Specialist: 11 AM – 3 PM</div>
+        <div class="card">🧪 Lab Open: 9 AM – 5 PM</div>
+        <div class="card">💉 Vaccination Available Today</div>`;
+    }
+
+    if (type === 'agri') {
+      title.innerText = "Agriculture Services";
+      img.style.backgroundImage = "url('https://i.pinimg.com/736x/f5/0a/0f/f50a0fa0e97e68b634a6d11e1ede09eb.jpg')";
+      content.innerHTML = `
+        <div class="card">🌾 Ward 7: 600kg Tapioca ready</div>
+        <div class="card">🍚 Ward 5: 60 sacks of rice (Farmer: Ramesh)</div>
+        <div class="card">🍌 Ward 13: Suresh has 8 banana bunches</div>`;
+    }
+
+    if (type === 'transport') {
+      title.innerText = "Transport Services";
+      img.style.backgroundImage = "url('https://i.pinimg.com/1200x/49/49/6e/49496e4d6bb61e25fc7161bac030abfa.jpg')";
+      content.innerHTML = `
+        <div class="card">🚌 Morning Bus: 7:30 AM</div>
+        <div class="card">🚌 School Bus: 8:45 AM</div>
+        <div class="card">🚌 Afternoon Bus: 1:30 PM</div>
+        <div class="card">🚌 Evening Bus: 5:15 PM</div>
+        <div class="card">🚌 Night Bus: 7:45 PM</div>`;
+    }
+
+    if (type === 'machine') {
+      title.innerText = "Machinery Services";
+      img.style.backgroundImage = "url('https://i.pinimg.com/1200x/c9/af/ad/c9afad680e0756fb6180ec8d7cb0c12d.jpg')";
+      content.innerHTML = `
+        <div class="card">🌴 Coconut Tree Climber: 8 AM – 1 PM</div>
+        <div class="card">🌿 Grass Cutting Machine Available</div>
+        <div class="card">🚜 Tiller Machine: 10 AM – 5 PM</div>`;
+    }
+
+    go('serviceDetail');
+  }
+
+  function callService() {
+    window.location.href = 'tel:' + currentServiceNumber;
+  }
+
+  function messageService() {
+    window.location.href = 'sms:' + currentServiceNumber;
+  }
+</script>
+</body>
+</html>
